@@ -1,0 +1,82 @@
+import pygame
+from pygame.draw import *
+from random import randint
+pygame.init()
+FPS = 1
+screen = pygame.display.set_mode((900, 500))
+MOVESPEED=6
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
+MAGENTA = (255, 0, 255)
+CYAN = (0, 255, 255)
+BLACK = (0, 0, 0)
+COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+def new_ball():
+    global x, y, r
+    x = randint(100,700)
+    y = randint(100,500)
+    r = randint(30,50)
+    x1 = randint(100,700)
+    y1 = randint(100,500)
+    r1 = randint(10,50)
+    color = COLORS[randint(0, 5)]
+    color1 = COLORS[randint(0, 5)]
+    clock.tick(1)
+    while (x!=801 and y!=451) and (x1!=50 and y1!=50):
+        pygame.display.update()
+        screen.fill(BLACK)
+        x=x+1
+        y=y+1
+        x1-=1
+        y1-=1
+        circle(screen, color, (x, y), r)
+        circle(screen, color1, (x1, y1), r1)
+    while (x!=50 and y!=50) and (x1!=801 and y1!=451):
+        pygame.display.update()
+        screen.fill(BLACK)
+        x=x-1
+        y=y-1
+        x1+=1
+        y1+=1
+        circle(screen, color, (x, y), r) 
+        circle(screen, color1, (x1, y1), r1)
+    while x!=851 and x1!=0:
+        pygame.display.update()
+        screen.fill(BLACK)
+        x=x+1
+        x1-=1
+        circle(screen, color, (x, y), r) 
+        circle(screen, color1, (x1, y1), r1)
+
+k=0
+def click(event):
+    global k
+    print(x, y, r)
+    a=(event.pos[0]-x)**2+(event.pos[1]-y)**2
+    if(a <= r**2):
+        print("попал")
+        k=k+1
+    else:
+        print("мимо")
+    
+
+pygame.display.update()
+clock = pygame.time.Clock()
+finished = False
+new_ball()
+while not finished:
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            finished = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            new_ball()
+            click(event)
+            print('Click!')
+    pygame.display.update()
+    screen.fill(BLACK)
+
+pygame.quit()
+print("счёт",k)
